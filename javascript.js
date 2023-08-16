@@ -1,5 +1,6 @@
 let userChoice
-
+let userScore = 0
+let computerScore = 0
 function getComputerChoice() {
     let arr = ["rock", "paper","scissors"]
     let random = arr[(Math.floor(Math.random() * arr.length))] 
@@ -7,46 +8,86 @@ function getComputerChoice() {
 }
 
 function singleRound(player, computer){
-    console.log("Computer Choice: " + computer)
+    //console.log("Computer Choice: " + computer)
     if(player == "rock" && computer == "paper" || player == "paper" && computer == "scissors" || player == "scissors" && computer == "rock"){
-        return ("You Lose! " + computer + " beats " + player)
+        return ("You Lose! " + computer + " beats " + player )
     }
     else if(computer == "rock" && player == "paper" || computer == "paper" && player == "scissors" || computer == "scissors" && player == "rock"){
-        return ("You Won! " + player + " beats " + computer)
+        return ("You Won! " + player + " beats " + computer )
     }
     else{
         return ("tie")
     }
 }
 
-function game(){
-    let userScore = 0
-    let computerScore = 0
-    let result
-    while(userScore <=3 && computerScore <=3){
-        userChoice = prompt("rock paper or scissors?")
-        userChoice = userChoice.toLowerCase()
-        result = singleRound(userChoice, getComputerChoice()) 
-        if(result.includes("Won")){
-            userScore++
-            console.log(result)
-        }
-        else if(result.includes("Lose")){
-            computerScore++
-            console.log(result)
-        }
-        else{
-            console.log(result)
-        }
-        console.log("User: " + userScore + " Computer: " + computerScore)
+function score(result){
+    if(result.includes("Won")){
+        userScore++
+        console.log(result)
     }
-    if(userScore > computerScore){
-        console.log("User wins!!!!!!")
+    else if(result.includes("Lose")){
+        computerScore++
+        console.log(result)
     }
     else{
-        console.log("Computer wins!!!!!!")
+        console.log(result)
     }
+     return ("User: " + userScore + " Computer: " + computerScore)
+}
+function endGame(){
+    if(userScore >4 || computerScore >4){
+        return true;
+    }
+    return false;
+}
+function final(){
+    if(userScore > computerScore){
+        return ("User wins!!!!!!")
+    }
+    else{
+        return ("Computer wins!!!!!!")
+    }
+}
+function game(){
+    let result
+    let userChoice
+    
+    
+    
+    const r = document.querySelector('#rock')
+    const p = document.querySelector('#paper')
+    const s = document.querySelector('#scissors')
+
+    const container = document.querySelector('#container')
+    const div = document.createElement('div');
+    div.textContent = 'Hello World!'
+
+    container.appendChild(div)
+    r.addEventListener('click', function(e){
+        div.textContent = (singleRound(e.target.id, getComputerChoice()))  + "\n" +score(div.textContent)
+        if(endGame()){
+            div.textContent = final();
+            return;
+        }
+    
+    });
+    p.addEventListener('click', function(e){
+        div.textContent = (singleRound(e.target.id, getComputerChoice())) + "\n" +score(div.textContent)
+        if(endGame()){
+            div.textContent = final();
+            return;
+        }
+    });
+    s.addEventListener('click', function(e){
+        div.textContent = (singleRound(e.target.id, getComputerChoice())) + "\n" +score(div.textContent)
+        if(endGame()){
+            div.textContent = final();
+            return;
+        }
+    });
+    
 }
 
 game()
+
 
